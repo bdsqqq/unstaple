@@ -1,53 +1,31 @@
-import { authenticate } from "@google-cloud/local-auth"
 import { google, gmail_v1 } from "googleapis"
 import * as fs from "fs"
 import * as path from "path"
 import type { Email, EmailId, EmailSource, Filter, AttachmentMeta } from "../types.js"
-
-const SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
+import { getTokenPath } from "../config/index.js"
 
 const ALLOWED_EXTENSIONS = new Set([".pdf", ".png", ".jpg", ".jpeg"])
 
 export type GmailSourceConfig = {
-  credentialsPath: string
-  tokenPath: string
+  tokenPath?: string
 }
 
 export class GmailSource implements EmailSource {
   private gmail: gmail_v1.Gmail | null = null
-  private config: GmailSourceConfig
+  private tokenPath: string
 
-  constructor(config: GmailSourceConfig) {
-    this.config = config
+  constructor(config: GmailSourceConfig = {}) {
+    this.tokenPath = config.tokenPath ?? getTokenPath()
   }
 
   async authorize(): Promise<void> {
-    let auth
-
-    if (fs.existsSync(this.config.tokenPath)) {
-      const content = fs.readFileSync(this.config.tokenPath, "utf-8")
-      const credentials = JSON.parse(content)
-      auth = google.auth.fromJSON(credentials)
-    } else {
-      const client = await authenticate({
-        scopes: SCOPES,
-        keyfilePath: this.config.credentialsPath,
-      })
-
-      if (client.credentials) {
-        const keys = JSON.parse(fs.readFileSync(this.config.credentialsPath, "utf-8"))
-        const key = keys.installed || keys.web
-        const payload = JSON.stringify({
-          type: "authorized_user",
-          client_id: key.client_id,
-          client_secret: key.client_secret,
-          refresh_token: client.credentials.refresh_token,
-        })
-        fs.writeFileSync(this.config.tokenPath, payload)
-      }
-
-      auth = client
+    if (!fs.existsSync(this.tokenPath)) {
+      throw new Error(`not authenticated. run: gmail-invoice-sync auth`)
     }
+
+    const content = fs.readFileSync(this.tokenPath, "utf-8")
+    const credentials = JSON.parse(content)
+    const auth = google.auth.fromJSON(credentials)
 
     this.gmail = google.gmail({ version: "v1", auth: auth as any })
   }
