@@ -7,24 +7,24 @@
 }:
 
 let
-  version = "0.0.1";
+  version = "0.0.2";
 
   sources = {
     "x86_64-linux" = {
       url = "https://github.com/bdsqqq/unstaple/releases/download/v${version}/unstaple-linux-x64";
-      hash = "sha256-apupO6RnpW5mMCd1nO/98G/ugrrsxHQbUQo1nrn3r3A=";
+      hash = "sha256-klqAYJTTqps4SdUt5UEVTkO+EF3V5CnM0U4gHZR32fY=";
     };
     "aarch64-linux" = {
       url = "https://github.com/bdsqqq/unstaple/releases/download/v${version}/unstaple-linux-arm64";
-      hash = "sha256-5t2bkmPAH5Kw5poPi6dW2ImAmgnA9Xq9a9RR+B3whcQ=";
+      hash = "sha256-HylKaIz5WAbGzfLRQEYC6m8knLx+MMg7+l+Uu0QX0ug=";
     };
     "x86_64-darwin" = {
       url = "https://github.com/bdsqqq/unstaple/releases/download/v${version}/unstaple-darwin-x64";
-      hash = "sha256-eBPLm2vi8H4KslUDhIlVsLlEL9ikmKXTux0cQLCrigU=";
+      hash = "sha256-MkBiyyPQttcXuWRaxI+5fooh4n+UYr1VS4j6wfghFNw=";
     };
     "aarch64-darwin" = {
       url = "https://github.com/bdsqqq/unstaple/releases/download/v${version}/unstaple-darwin-arm64";
-      hash = "sha256-i7Zb0HvjVXjRueq/WUOsNhAKlqzSwYCxnA4Q4sMBt0I=";
+      hash = "sha256-yFtzDW6ILl7TRUIXBeou8T8k2r3+mnMNFKqrEHuKxxw=";
     };
   };
 
