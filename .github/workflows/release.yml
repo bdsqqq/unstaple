@@ -19,8 +19,9 @@ jobs:
           fetch-tags: true
           ssh-key: ${{ secrets.DEPLOY_KEY }}
       - uses: oven-sh/setup-bun@v1
+      - uses: pnpm/action-setup@v4
 
-      - run: bun install
+      - run: pnpm install
 
       # generate changesets from conventional commits since last tag
       - name: Generate changesets from commits
@@ -51,7 +52,7 @@ jobs:
       - name: Check for missing GitHub release
         id: release-check
         run: |
-          VERSION=$(node -p "require('./package.json').version")
+          VERSION=$(node -p "require('./packages/cli/package.json').version")
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           if gh release view "v$VERSION" &>/dev/null; then
             echo "exists=true" >> "$GITHUB_OUTPUT"

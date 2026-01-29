@@ -1,0 +1,38 @@
+{
+  "name": "unstaple",
+  "version": "0.0.1",
+  "description": "extract attachments from gmail",
+  "main": "src/index.ts",
+  "bin": {
+    "unstaple": "src/index.ts"
+  },
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "dev": "bun run --watch src/index.ts",
+    "build": "bun build src/index.ts --compile --outfile dist/unstaple",
+    "lint": "oxlint src/",
+    "format": "oxlint --fix src/",
+    "check": "tsc --noEmit"
+  },
+  "type": "module",
+  "keywords": ["gmail", "attachments", "email", "extract", "download"],
+  "author": "Igor Bedesqui",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bdsqqq/unstaple"
+  },
+  "dependencies": {
+    "@axiomhq/js": "^1.4.0",
+    "@axiomhq/logging": "^0.2.0",
+    "@google-cloud/local-auth": "^3.0.1",
+    "googleapis": "^168.0.0"
+  },
+  "devDependencies": {
+    "@total-typescript/tsconfig": "^1.0.4",
+    "@types/node": "^24.10.2",
+    "oxlint": "^1.42.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}

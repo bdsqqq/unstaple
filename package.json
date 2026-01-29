@@ -1,43 +1,19 @@
 {
-  "name": "unstaple",
-  "version": "0.0.1",
-  "description": "extract attachments from gmail",
-  "main": "src/index.ts",
-  "bin": {
-    "unstaple": "src/index.ts"
-  },
-  "scripts": {
-    "start": "bun run src/index.ts",
-    "dev": "bun run --watch src/index.ts",
-    "build": "bun build src/index.ts --compile --outfile dist/unstaple",
-    "build:all": "bun build src/index.ts --compile --target=bun-linux-x64 --outfile dist/unstaple-linux-x64 && bun build src/index.ts --compile --target=bun-linux-arm64 --outfile dist/unstaple-linux-arm64 && bun build src/index.ts --compile --target=bun-darwin-x64 --outfile dist/unstaple-darwin-x64 && bun build src/index.ts --compile --target=bun-darwin-arm64 --outfile dist/unstaple-darwin-arm64",
-    "lint": "oxlint src/",
-    "format": "oxlint --fix src/",
-    "check": "tsc --noEmit",
-    "version": "changeset version"
-  },
-  "type": "module",
-  "keywords": ["gmail", "attachments", "email", "extract", "download"],
-  "author": "Igor Bedesqui",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/bdsqqq/unstaple"
-  },
+  "name": "unstaple-monorepo",
+  "version": "0.0.0",
+  "private": true,
   "packageManager": "pnpm@10.12.1",
-  "dependencies": {
-    "@axiomhq/js": "^1.4.0",
-    "@axiomhq/logging": "^0.2.0",
-    "@google-cloud/local-auth": "^3.0.1",
-    "googleapis": "^168.0.0"
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "build:all": "bun build ./packages/cli/src/index.ts --compile --target=bun-linux-x64 --outfile dist/unstaple-linux-x64 && bun build ./packages/cli/src/index.ts --compile --target=bun-linux-arm64 --outfile dist/unstaple-linux-arm64 && bun build ./packages/cli/src/index.ts --compile --target=bun-darwin-x64 --outfile dist/unstaple-darwin-x64 && bun build ./packages/cli/src/index.ts --compile --target=bun-darwin-arm64 --outfile dist/unstaple-darwin-arm64",
+    "check": "turbo run check",
+    "lint": "turbo run lint",
+    "version": "changeset version"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.8",
-    "@total-typescript/tsconfig": "^1.0.4",
-    "@types/node": "^24.10.2",
     "changeset-conventional-commits": "^0.2.5",
-    "oxlint": "^1.42.0",
-    "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "turbo": "^2.5.4"
   }
 }
