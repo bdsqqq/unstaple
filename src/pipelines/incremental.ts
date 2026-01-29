@@ -1,5 +1,6 @@
 import type { EmailSource, Filter, NamingStrategy, StorageBackend } from "../types.js"
 import type { Cache } from "../cache/index.js"
+import type { Logger } from "../logging/index.js"
 import { discover } from "../operations/discover.js"
 import { fetch } from "../operations/fetch.js"
 import { download } from "../operations/download.js"
@@ -13,6 +14,7 @@ export type IncrementalConfig = {
   storage: StorageBackend
   cache: Cache
   sourceName: string
+  logger?: Logger
   onProgress?: (msg: string) => void
 }
 
@@ -21,58 +23,79 @@ export type IncrementalConfig = {
  * if no lastSync exists, behaves like full-sync.
  */
 export async function incremental(config: IncrementalConfig): Promise<{ written: number; skipped: number }> {
-  const { source, filter, naming, storage, cache, sourceName, onProgress } = config
+  const { source, filter, naming, storage, cache, sourceName, logger, onProgress } = config
 
-  const log = onProgress ?? console.log
+  const startTime = Date.now()
 
   await cache.load()
   const lastSync = cache.getLastSync()
 
-  log("authorizing...")
+  logger?.info("authorizing", { operation: "sync", source: sourceName })
+  onProgress?.("authorizing...")
   await source.authorize()
 
   if (lastSync) {
-    log(`incremental sync since ${lastSync.toISOString()}...`)
+    logger?.info("incremental sync starting", { 
+      operation: "sync", 
+      source: sourceName,
+      since: lastSync.toISOString() 
+    })
+    onProgress?.(`incremental sync since ${lastSync.toISOString()}...`)
   } else {
-    log("no previous sync found, doing full discovery...")
+    logger?.info("full discovery starting", { operation: "sync", source: sourceName })
+    onProgress?.("no previous sync found, doing full discovery...")
   }
 
-  log("discovering emails...")
+  logger?.info("discovering emails", { operation: "discover", source: sourceName })
+  onProgress?.("discovering emails...")
   const ids = discover(source, filter, {
     since: lastSync ?? undefined,
     hooks: {
       onCacheUpdate: async (batch) => {
-        log(`discovered ${batch.length} new emails`)
+        logger?.info("emails discovered", { operation: "discover", count: batch.length })
+        onProgress?.(`discovered ${batch.length} new emails`)
       },
     },
   })
 
-  log("fetching metadata...")
+  logger?.info("fetching metadata", { operation: "fetch", source: sourceName })
+  onProgress?.("fetching metadata...")
   const emails = fetch(source, ids, {
     hooks: {
       onItem: async (email) => {
+        logger?.debug("email fetched", { 
+          operation: "fetch", 
+          emailId: email.id,
+          attachmentCount: email.attachments.length 
+        })
         cache.setEmail(email)
       },
     },
   })
 
-  log("downloading attachments...")
+  logger?.info("downloading attachments", { operation: "download", source: sourceName })
+  onProgress?.("downloading attachments...")
   const attachments = download(source, emails)
 
   async function* withNames() {
     for await (const ctx of attachments) {
       const fullCtx = { ...ctx, source: sourceName }
       const generatedName = name(naming, fullCtx)
+      logger?.debug("attachment named", {
+        operation: "download",
+        emailId: ctx.email.id,
+        attachmentId: ctx.attachment.id,
+        filename: generatedName,
+      })
       yield { ...fullCtx, generatedName }
     }
   }
 
-  log("storing files...")
+  logger?.info("storing files", { operation: "store", source: sourceName })
+  onProgress?.("storing files...")
   const results = store(storage, withNames(), {
     hooks: {
       onCacheUpdate: async (file, email) => {
-        // track which files we've stored for this email
-        // uses first attachment id as key since we process sequentially
         const att = email.attachments[0]
         if (att) {
           cache.setFilePath(email.id, att.id, file.path)
@@ -87,18 +110,41 @@ export async function incremental(config: IncrementalConfig): Promise<{ written:
   for await (const result of results) {
     if (result.status === "written") {
       written++
-      log(`✓ ${result.path}`)
+      logger?.info("file written", { 
+        operation: "store", 
+        filename: result.path,
+        status: "written" 
+      })
+      onProgress?.(`✓ ${result.path}`)
     } else {
       skipped++
-      log(`· ${result.path} (exists)`)
+      logger?.debug("file skipped", { 
+        operation: "store", 
+        filename: result.path,
+        status: "skipped" 
+      })
+      onProgress?.(`· ${result.path} (exists)`)
     }
   }
 
   cache.setLastSync(new Date())
   await cache.flush()
 
-  log(`\ndone! written: ${written}, skipped: ${skipped}`)
-  log(`cache: ${cache.emailCount} emails, ${cache.fileCount} files tracked`)
+  const durationMs = Date.now() - startTime
+
+  logger?.info("sync complete", {
+    operation: "sync",
+    source: sourceName,
+    written,
+    skipped,
+    emailCount: cache.emailCount,
+    fileCount: cache.fileCount,
+    durationMs,
+  })
+  onProgress?.(`\ndone! written: ${written}, skipped: ${skipped}`)
+  onProgress?.(`cache: ${cache.emailCount} emails, ${cache.fileCount} files tracked`)
+
+  await logger?.flush()
 
   return { written, skipped }
 }
