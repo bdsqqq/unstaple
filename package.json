@@ -1,8 +1,11 @@
 {
   "name": "gmail-invoice-sync",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "extract invoice attachments from gmail",
   "main": "src/index.ts",
+  "bin": {
+    "gmail-invoice-sync": "src/index.ts"
+  },
   "scripts": {
     "start": "bun run src/index.ts",
     "dev": "bun run --watch src/index.ts",
@@ -12,9 +15,13 @@
     "check": "tsc --noEmit"
   },
   "type": "module",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["gmail", "invoice", "sync", "attachments", "email"],
+  "author": "Igor Bedesqui",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bdsqqq/gmail-invoice-sync"
+  },
   "packageManager": "pnpm@10.12.1",
   "dependencies": {
     "@axiomhq/js": "^1.4.0",
