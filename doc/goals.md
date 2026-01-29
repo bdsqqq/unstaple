@@ -50,19 +50,26 @@ proposed: include domain or vendor normalization.
 
 ## immediate priorities (2026-01-29)
 
-### phase 1: tooling setup
-- [ ] add bun as runtime (keep pnpm for packages)
-- [ ] add oxc for linting + formatting
-- [ ] update package.json scripts
-- [ ] verify existing functionality still works
+### phase 1: tooling setup ✓
+- [x] add bun as runtime (keep pnpm for packages)
+- [x] add oxc for linting + formatting
+- [x] update package.json scripts
+- [x] verify existing functionality still works
 
-### phase 2: modular refactor
-- [ ] split index.ts into modules (auth, sources, filters, extractors, naming, storage)
-- [ ] define interfaces for each module
-- [ ] wire modules in new index.ts
+### phase 2: modular refactor ✓
+- [x] split index.ts into modules (auth, sources, filters, extractors, naming, storage)
+- [x] define interfaces for each module
+- [x] wire modules in new index.ts
 
-### phase 3: feature improvements
-- [ ] new naming convention (person + company extraction)
-- [ ] add millennium "extrato combinado" to search queries
-- [ ] (future) incremental sync
-- [ ] (future) cloud deployment
+### phase 3: feature improvements ✓
+- [x] new naming convention (person + company extraction)
+- [x] add millennium "extrato combinado" to search queries
+- [x] incremental sync pipeline
+- [x] cache layer for metadata persistence
+- [x] rename pipeline (apply new naming to existing files)
+
+### next up
+- [ ] CLI improvements (args parsing, help text)
+- [ ] cron/webhook triggers
+- [ ] cloud storage backend (S3)
+- [ ] headless OAuth for cloud deployment
