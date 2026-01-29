@@ -1,6 +1,6 @@
 {
   "name": "unstaple",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "extract attachments from gmail",
   "main": "src/index.ts",
   "bin": {
@@ -15,7 +15,13 @@
     "check": "tsc --noEmit"
   },
   "type": "module",
-  "keywords": ["gmail", "attachments", "email", "extract", "download"],
+  "keywords": [
+    "gmail",
+    "attachments",
+    "email",
+    "extract",
+    "download"
+  ],
   "author": "Igor Bedesqui",
   "license": "MIT",
   "repository": {
