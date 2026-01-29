@@ -1,35 +1,31 @@
-import * as path from "path"
-import { fileURLToPath } from "url"
 import { GmailSource } from "./sources/index.js"
 import { InvoiceFilter } from "./filters/index.js"
 import { InvoiceNamingStrategy } from "./operations/index.js"
 import { LocalStorage } from "./storage/index.js"
 import { Cache } from "./cache/index.js"
 import { createLogger } from "./logging/index.js"
+import { loadConfig, ensureDataDir } from "./config/index.js"
+import { authCommand } from "./commands/auth.js"
 import { fullSync, incremental, renameFiles } from "./pipelines/index.js"
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
-const CREDENTIALS_PATH = path.join(
-  __dirname,
-  "../../2025-12-09 google cloud mbp-m2 sync invoice attachments client_secret_1030944683117-b2ksqdfvn7unk9ojr7tpeqv6l635hq7k.apps.googleusercontent.com.json"
-)
-const TOKEN_PATH = path.join(__dirname, "../token.json")
-const OUTPUT_DIR = path.join(__dirname, "../../invoices")
 
 async function main() {
   const command = process.argv[2] ?? "sync"
+  const args = process.argv.slice(3)
 
-  const source = new GmailSource({
-    credentialsPath: CREDENTIALS_PATH,
-    tokenPath: TOKEN_PATH,
-  })
+  if (command === "auth") {
+    await authCommand(args)
+    return
+  }
 
+  const config = loadConfig()
+  const outputDir = config.outputDir
+  ensureDataDir()
+
+  const source = new GmailSource({ tokenPath: config.tokenPath })
   const filter = new InvoiceFilter()
   const naming = new InvoiceNamingStrategy()
-  const storage = new LocalStorage(OUTPUT_DIR)
-  const cache = new Cache(OUTPUT_DIR)
+  const storage = new LocalStorage(outputDir)
+  const cache = new Cache(outputDir)
   const logger = createLogger()
 
   switch (command) {
@@ -66,11 +62,42 @@ async function main() {
       })
       break
 
+    case "help":
+    case "--help":
+    case "-h":
+      printHelp()
+      break
+
     default:
       console.log(`unknown command: ${command}`)
-      console.log("available commands: sync, full-sync, rename")
+      printHelp()
       process.exit(1)
   }
 }
 
-main().catch(console.error)
+function printHelp() {
+  console.log(`gmail-invoice-sync - extract invoice attachments from gmail
+
+commands:
+  auth            authenticate with gmail (opens browser)
+  auth status     show authentication status
+  auth logout     remove saved credentials
+  sync            incremental sync (default)
+  full-sync       full sync (re-fetch all)
+  rename          rename existing files with current naming strategy
+  help            show this help
+
+environment variables:
+  GMAIL_INVOICE_SYNC_TOKEN_PATH        path to token.json
+  GMAIL_INVOICE_SYNC_CREDENTIALS_PATH  path to credentials.json
+  GMAIL_INVOICE_SYNC_OUTPUT_DIR        output directory for invoices
+  AXIOM_TOKEN                          axiom api token (for logging)
+  AXIOM_DATASET                        axiom dataset name
+  LOG_LEVEL                            debug|info|warn|error (default: info)
+`)
+}
+
+main().catch((err) => {
+  console.error(err.message ?? err)
+  process.exit(1)
+})
