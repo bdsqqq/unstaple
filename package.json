@@ -1,26 +1,27 @@
 {
-  "name": "gmail-invoice-sync",
+  "name": "unstaple",
   "version": "0.0.1",
-  "description": "extract invoice attachments from gmail",
+  "description": "extract attachments from gmail",
   "main": "src/index.ts",
   "bin": {
-    "gmail-invoice-sync": "src/index.ts"
+    "unstaple": "src/index.ts"
   },
   "scripts": {
     "start": "bun run src/index.ts",
     "dev": "bun run --watch src/index.ts",
-    "build": "bun build src/index.ts --compile --outfile dist/gmail-invoice-sync",
+    "build": "bun build src/index.ts --compile --outfile dist/unstaple",
+    "build:all": "bun build src/index.ts --compile --target=bun-linux-x64 --outfile dist/unstaple-linux-x64 && bun build src/index.ts --compile --target=bun-linux-arm64 --outfile dist/unstaple-linux-arm64 && bun build src/index.ts --compile --target=bun-darwin-x64 --outfile dist/unstaple-darwin-x64 && bun build src/index.ts --compile --target=bun-darwin-arm64 --outfile dist/unstaple-darwin-arm64",
     "lint": "oxlint src/",
     "format": "oxlint --fix src/",
     "check": "tsc --noEmit"
   },
   "type": "module",
-  "keywords": ["gmail", "invoice", "sync", "attachments", "email"],
+  "keywords": ["gmail", "attachments", "email", "extract", "download"],
   "author": "Igor Bedesqui",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bdsqqq/gmail-invoice-sync"
+    "url": "https://github.com/bdsqqq/unstaple"
   },
   "packageManager": "pnpm@10.12.1",
   "dependencies": {

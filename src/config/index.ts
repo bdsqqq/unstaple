@@ -2,7 +2,7 @@ import * as fs from "fs"
 import * as path from "path"
 import * as os from "os"
 
-const APP_NAME = "gmail-invoice-sync"
+const APP_NAME = "unstaple"
 
 export type Config = {
   tokenPath: string
@@ -43,15 +43,15 @@ export function ensureDataDir(): string {
 }
 
 export function getTokenPath(): string {
-  return process.env.GMAIL_INVOICE_SYNC_TOKEN_PATH ?? path.join(getConfigDir(), "token.json")
+  return process.env.UNSTAPLE_TOKEN_PATH ?? path.join(getConfigDir(), "token.json")
 }
 
 export function getCredentialsPath(): string {
-  return process.env.GMAIL_INVOICE_SYNC_CREDENTIALS_PATH ?? path.join(getConfigDir(), "credentials.json")
+  return process.env.UNSTAPLE_CREDENTIALS_PATH ?? path.join(getConfigDir(), "credentials.json")
 }
 
 export function getOutputDir(): string {
-  return process.env.GMAIL_INVOICE_SYNC_OUTPUT_DIR ?? path.join(getDataDir(), "invoices")
+  return process.env.UNSTAPLE_OUTPUT_DIR ?? path.join(getDataDir(), "invoices")
 }
 
 export function hasToken(): boolean {

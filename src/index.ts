@@ -76,7 +76,7 @@ async function main() {
 }
 
 function printHelp() {
-  console.log(`gmail-invoice-sync - extract invoice attachments from gmail
+  console.log(`unstaple - extract attachments from gmail
 
 commands:
   auth            authenticate with gmail (opens browser)
@@ -88,12 +88,12 @@ commands:
   help            show this help
 
 environment variables:
-  GMAIL_INVOICE_SYNC_TOKEN_PATH        path to token.json
-  GMAIL_INVOICE_SYNC_CREDENTIALS_PATH  path to credentials.json
-  GMAIL_INVOICE_SYNC_OUTPUT_DIR        output directory for invoices
-  AXIOM_TOKEN                          axiom api token (for logging)
-  AXIOM_DATASET                        axiom dataset name
-  LOG_LEVEL                            debug|info|warn|error (default: info)
+  UNSTAPLE_TOKEN_PATH        path to token.json
+  UNSTAPLE_CREDENTIALS_PATH  path to credentials.json
+  UNSTAPLE_OUTPUT_DIR        output directory
+  AXIOM_TOKEN                axiom api token (for logging)
+  AXIOM_DATASET              axiom dataset name
+  LOG_LEVEL                  debug|info|warn|error (default: info)
 `)
 }
 

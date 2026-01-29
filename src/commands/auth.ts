@@ -75,7 +75,7 @@ async function runAuthFlow(): Promise<void> {
     console.error("4. download the json and save it to:")
     console.error(`   ${credentialsPath}`)
     console.error("")
-    console.error("or set GMAIL_INVOICE_SYNC_CREDENTIALS_PATH to point to your credentials file")
+    console.error("or set UNSTAPLE_CREDENTIALS_PATH to point to your credentials file")
     process.exit(1)
   }
 

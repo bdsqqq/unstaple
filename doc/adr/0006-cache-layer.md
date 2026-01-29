@@ -17,7 +17,7 @@ add a cache layer that persists:
 - `emails`: map of emailId → Email metadata
 - `files`: map of emailId → stored file paths
 
-stored as JSON in `.gmail-invoice-sync/cache.json` alongside output dir.
+stored as JSON in `.unstaple/cache.json` alongside output dir.
 
 ### interface
 

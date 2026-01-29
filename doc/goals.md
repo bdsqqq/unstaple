@@ -1,4 +1,4 @@
-# gmail-invoice-sync goals
+# unstaple goals
 
 created: 2026-01-29
 

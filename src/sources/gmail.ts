@@ -20,7 +20,7 @@ export class GmailSource implements EmailSource {
 
   async authorize(): Promise<void> {
     if (!fs.existsSync(this.tokenPath)) {
-      throw new Error(`not authenticated. run: gmail-invoice-sync auth`)
+      throw new Error(`not authenticated. run: unstaple auth`)
     }
 
     const content = fs.readFileSync(this.tokenPath, "utf-8")

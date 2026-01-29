@@ -28,11 +28,11 @@ precedence: --flag > ENV_VAR > ~/.config/app/file
 ### xdg-compliant paths
 
 ```
-~/.config/gmail-invoice-sync/
+~/.config/unstaple/
   credentials.json    # oauth client secret (user provides)
   token.json          # refresh token (auth command creates)
 
-~/.local/share/gmail-invoice-sync/
+~/.local/share/unstaple/
   invoices/           # downloaded files
   .cache.json         # sync state
 ```
@@ -41,18 +41,18 @@ precedence: --flag > ENV_VAR > ~/.config/app/file
 
 | var | description |
 |-----|-------------|
-| `GMAIL_INVOICE_SYNC_TOKEN_PATH` | path to token.json |
-| `GMAIL_INVOICE_SYNC_CREDENTIALS_PATH` | path to credentials.json |
-| `GMAIL_INVOICE_SYNC_OUTPUT_DIR` | output directory |
+| `UNSTAPLE_TOKEN_PATH` | path to token.json |
+| `UNSTAPLE_CREDENTIALS_PATH` | path to credentials.json |
+| `UNSTAPLE_OUTPUT_DIR` | output directory |
 
 for deployment: sops decrypts secrets to a path, service sets env var.
 
 ### auth command
 
 ```bash
-gmail-invoice-sync auth           # run oauth flow, save token
-gmail-invoice-sync auth status    # show current auth state
-gmail-invoice-sync auth logout    # remove token
+unstaple auth           # run oauth flow, save token
+unstaple auth status    # show current auth state
+unstaple auth logout    # remove token
 ```
 
 interactive auth happens once on a machine with a browser. for headless servers, copy the token or use env var pointing to sops-decrypted file.

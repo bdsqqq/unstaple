@@ -1,6 +1,6 @@
-# gmail-invoice-sync
+# unstaple
 
-extract invoice attachments from gmail. automatic vendor detection, incremental sync, sane filenames.
+extract attachments from gmail. automatic vendor detection, incremental sync, sane filenames.
 
 ```bash
 pnpm install
@@ -12,7 +12,7 @@ bun run src/index.ts sync
 ### `sync` — incremental sync
 
 ```bash
-bun run src/index.ts sync
+unstaple sync
 
 # fetches only new emails since last run
 # caches metadata for future operations
@@ -22,7 +22,7 @@ bun run src/index.ts sync
 ### `full-sync` — full rescan
 
 ```bash
-bun run src/index.ts full-sync
+unstaple full-sync
 
 # ignores cache, re-fetches everything
 # use when query patterns change
@@ -31,7 +31,7 @@ bun run src/index.ts full-sync
 ### `rename` — apply new naming
 
 ```bash
-bun run src/index.ts rename
+unstaple rename
 
 # uses cached metadata to rename existing files
 # no re-download needed
@@ -61,12 +61,14 @@ two query strategies OR'd:
 
 1. create google cloud project with gmail API enabled
 2. download OAuth credentials JSON
-3. place in project root (gitignored by `*client_secret*.json`)
-4. run `sync` — browser opens for auth, token cached
+3. place in `~/.config/unstaple/credentials.json`
+4. run `unstaple auth` — browser opens for auth, token cached
 
 ```bash
-# credentials path configured in src/index.ts
-# token saved to token.json (gitignored)
+# or override paths via env vars
+export UNSTAPLE_CREDENTIALS_PATH=/path/to/credentials.json
+export UNSTAPLE_TOKEN_PATH=/path/to/token.json
+export UNSTAPLE_OUTPUT_DIR=/path/to/output
 ```
 
 ## architecture
