@@ -99,6 +99,20 @@ pnpm run check      # tsc --noEmit
 pnpm run lint       # oxlint
 ```
 
+## install
+
+### nix (flakes)
+
+```bash
+nix run github:bdsqqq/unstaple -- sync
+```
+
+or add to your flake inputs.
+
+### binary
+
+grab from [releases](https://github.com/bdsqqq/unstaple/releases).
+
 ## license
 
 MIT
