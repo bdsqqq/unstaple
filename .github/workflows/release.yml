@@ -12,6 +12,8 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: oven-sh/setup-bun@v1
 
       - run: bun install
@@ -23,7 +25,20 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          VERSION="${GITHUB_REF#refs/tags/}"
-          gh release create "$VERSION" dist/* \
-            --title "$VERSION" \
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          gh release create "v$VERSION" dist/* \
+            --title "v$VERSION" \
             --generate-notes
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v27
+
+      - name: Update nix hashes and commit
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          ./scripts/update-nix-hashes.sh "$VERSION"
+          git add nix/default.nix
+          git commit -m "chore(nix): update to v$VERSION"
+          git push origin HEAD:main
