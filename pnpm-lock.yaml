@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@axiomhq/js':
+        specifier: ^1.4.0
+        version: 1.4.0
+      '@axiomhq/logging':
+        specifier: ^0.2.0
+        version: 0.2.0(@axiomhq/js@1.4.0)
       '@google-cloud/local-auth':
         specifier: ^3.0.1
         version: 3.0.1
@@ -32,6 +38,19 @@ importers:
         version: 5.9.3
 
 packages:
+
+  '@axiomhq/js@1.4.0':
+    resolution: {integrity: sha512-wC5x1ud/QJMstrjpicATkyY8+ZVWEl4WlXMtA5EZf7hkj0+b191yv4yynLxLEfr/MveXora9m6CWdJq4DsbcAg==}
+    engines: {node: '>=20'}
+
+  '@axiomhq/logging@0.2.0':
+    resolution: {integrity: sha512-Ro3GxgBAZQvsbx6Yjor9f6yx2IC7Wvqy0FC7HGcOjdtswl0refGB+gtKs94XyxbfnIo6MbKjHhHHkZOubjE+pQ==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      '@axiomhq/js': 1.4.0
+    peerDependenciesMeta:
+      '@axiomhq/js':
+        optional: true
 
   '@esbuild/aix-ppc64@0.27.1':
     resolution: {integrity: sha512-HHB50pdsBX6k47S4u5g/CaLjqS3qwaOVE5ILsq64jyzgMhLuCuZ8rGzM9yhsAjfjkbgUPMzZEPa7DAp7yz6vuA==}
@@ -358,6 +377,9 @@ packages:
     resolution: {integrity: sha512-7yAQpD2UMJzLi1Dqv7qFYnPbaPx7ZfFK6PiIxQ4PfkGPyNyl2Ugx+a/umUonmKqjhM4DnfbMvdX6otXq83soQQ==}
     engines: {node: ^12.20 || >= 14.13}
 
+  fetch-retry@6.0.0:
+    resolution: {integrity: sha512-BUFj1aMubgib37I3v4q78fYo63Po7t4HUPTpQ6/QE6yK6cIQrP+W43FYToeTEyg5m2Y7eFUtijUuAv/PDlWuag==}
+
   foreground-child@3.3.1:
     resolution: {integrity: sha512-gIXjKqtFuWEgzFRJA9WCQeSJLZDjgJUOMCMzxtvFq/37KojM1BFGufqsCy0r4qSQmYLsZYMeyRqzIWOMup03sw==}
     engines: {node: '>=14'}
@@ -659,6 +681,14 @@ packages:
 
 snapshots:
 
+  '@axiomhq/js@1.4.0':
+    dependencies:
+      fetch-retry: 6.0.0
+
+  '@axiomhq/logging@0.2.0(@axiomhq/js@1.4.0)':
+    optionalDependencies:
+      '@axiomhq/js': 1.4.0
+
   '@esbuild/aix-ppc64@0.27.1':
     optional: true
 
@@ -902,6 +932,8 @@ snapshots:
     dependencies:
       node-domexception: 1.0.0
       web-streams-polyfill: 3.3.3
+
+  fetch-retry@6.0.0: {}
 
   foreground-child@3.3.1:
     dependencies:

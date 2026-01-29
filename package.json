@@ -17,6 +17,8 @@
   "license": "ISC",
   "packageManager": "pnpm@10.12.1",
   "dependencies": {
+    "@axiomhq/js": "^1.4.0",
+    "@axiomhq/logging": "^0.2.0",
     "@google-cloud/local-auth": "^3.0.1",
     "googleapis": "^168.0.0"
   },
