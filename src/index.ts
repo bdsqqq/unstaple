@@ -5,6 +5,7 @@ import { InvoiceFilter } from "./filters/index.js"
 import { InvoiceNamingStrategy } from "./operations/index.js"
 import { LocalStorage } from "./storage/index.js"
 import { Cache } from "./cache/index.js"
+import { createLogger } from "./logging/index.js"
 import { fullSync, incremental, renameFiles } from "./pipelines/index.js"
 
 const __filename = fileURLToPath(import.meta.url)
@@ -29,6 +30,7 @@ async function main() {
   const naming = new InvoiceNamingStrategy()
   const storage = new LocalStorage(OUTPUT_DIR)
   const cache = new Cache(OUTPUT_DIR)
+  const logger = createLogger()
 
   switch (command) {
     case "full-sync":
@@ -38,6 +40,7 @@ async function main() {
         naming,
         storage,
         sourceName: "gmail",
+        logger,
       })
       break
 
@@ -49,6 +52,7 @@ async function main() {
         storage,
         cache,
         sourceName: "gmail",
+        logger,
       })
       break
 
@@ -58,6 +62,7 @@ async function main() {
         storage,
         cache,
         sourceName: "gmail",
+        logger,
       })
       break
 
