@@ -1,11 +1,15 @@
 {
   "name": "gmail-invoice-sync",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "extract invoice attachments from gmail",
+  "main": "src/index.ts",
   "scripts": {
-    "start": "tsx src/index.ts",
-    "build": "tsc"
+    "start": "bun run src/index.ts",
+    "dev": "bun run --watch src/index.ts",
+    "build": "bun build src/index.ts --compile --outfile dist/gmail-invoice-sync",
+    "lint": "oxlint src/",
+    "format": "oxlint --fix src/",
+    "check": "tsc --noEmit"
   },
   "type": "module",
   "keywords": [],
@@ -17,7 +21,9 @@
     "googleapis": "^168.0.0"
   },
   "devDependencies": {
+    "@total-typescript/tsconfig": "^1.0.4",
     "@types/node": "^24.10.2",
+    "oxlint": "^1.42.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
