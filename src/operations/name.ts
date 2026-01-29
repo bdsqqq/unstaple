@@ -1,6 +1,7 @@
 import type { AttachmentContext, NamingStrategy } from "../types.js"
 
 const GENERIC_PREFIXES = new Set([
+  // english
   "noreply",
   "no-reply",
   "no_reply",
@@ -35,6 +36,33 @@ const GENERIC_PREFIXES = new Set([
   "system",
   "service",
   "services",
+  // portuguese
+  "naoresponder",
+  "nao-responder",
+  "nao_responder",
+  "naoresponda",
+  "nao-responda",
+  "semresposta",
+  "sem-resposta",
+  "faturacao",
+  "faturacaoeletronica",
+  "faturas",
+  "fatura",
+  "recibos",
+  "recibo",
+  "cobranca",
+  "cobrancas",
+  "pagamentos",
+  "pagamento",
+  "contato",
+  "contacto",
+  "atendimento",
+  "comunicacao",
+  "avisos",
+  "aviso",
+  // compound patterns (will match after normalization)
+  "noreplyfaturaseletronicas",
+  "faturaseletronicas",
 ])
 
 const STRIP_SUBDOMAINS = new Set(["mail", "www", "app", "api", "smtp", "email", "e-mail"])
