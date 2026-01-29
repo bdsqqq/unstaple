@@ -13,7 +13,8 @@
     "build:all": "bun build src/index.ts --compile --target=bun-linux-x64 --outfile dist/unstaple-linux-x64 && bun build src/index.ts --compile --target=bun-linux-arm64 --outfile dist/unstaple-linux-arm64 && bun build src/index.ts --compile --target=bun-darwin-x64 --outfile dist/unstaple-darwin-x64 && bun build src/index.ts --compile --target=bun-darwin-arm64 --outfile dist/unstaple-darwin-arm64",
     "lint": "oxlint src/",
     "format": "oxlint --fix src/",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "version": "changeset version"
   },
   "type": "module",
   "keywords": ["gmail", "attachments", "email", "extract", "download"],
@@ -31,8 +32,10 @@
     "googleapis": "^168.0.0"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.29.8",
     "@total-typescript/tsconfig": "^1.0.4",
     "@types/node": "^24.10.2",
+    "changeset-conventional-commits": "^0.2.5",
     "oxlint": "^1.42.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
