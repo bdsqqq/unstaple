@@ -93,13 +93,15 @@ async function downloadAttachments(
   if (dateHeader?.value) {
     try {
       const date = new Date(dateHeader.value);
-      dateStr = date.toISOString().split("T")[0];
+      const iso = date.toISOString().split("T")[0];
+      if (iso) dateStr = iso;
     } catch {}
   }
 
-  const from = fromHeader?.value?.match(/<(.+?)>/)?.[1] ?? fromHeader?.value ?? "unknown";
-  const fromClean = sanitizeFilename(from.split("@")[0]);
-  const subject = sanitizeFilename(subjectHeader?.value ?? "no-subject");
+  const fromRaw = fromHeader?.value ?? "unknown";
+  const from = fromRaw.match(/<(.+?)>/)?.[1] ?? fromRaw;
+  const fromClean = sanitizeFilename(from.split("@")[0] ?? "unknown");
+  const _subject = sanitizeFilename(subjectHeader?.value ?? "no-subject");
 
   const parts = msg.data.payload?.parts ?? [];
   const attachments: { filename: string; attachmentId: string }[] = [];
