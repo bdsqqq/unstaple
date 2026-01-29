@@ -4,7 +4,8 @@ import { GmailSource } from "./sources/index.js"
 import { InvoiceFilter } from "./filters/index.js"
 import { InvoiceNamingStrategy } from "./operations/index.js"
 import { LocalStorage } from "./storage/index.js"
-import { fullSync } from "./pipelines/index.js"
+import { Cache } from "./cache/index.js"
+import { fullSync, incremental, renameFiles } from "./pipelines/index.js"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -17,7 +18,7 @@ const TOKEN_PATH = path.join(__dirname, "../token.json")
 const OUTPUT_DIR = path.join(__dirname, "../../invoices")
 
 async function main() {
-  const command = process.argv[2] ?? "full-sync"
+  const command = process.argv[2] ?? "sync"
 
   const source = new GmailSource({
     credentialsPath: CREDENTIALS_PATH,
@@ -27,6 +28,7 @@ async function main() {
   const filter = new InvoiceFilter()
   const naming = new InvoiceNamingStrategy()
   const storage = new LocalStorage(OUTPUT_DIR)
+  const cache = new Cache(OUTPUT_DIR)
 
   switch (command) {
     case "full-sync":
@@ -39,9 +41,29 @@ async function main() {
       })
       break
 
+    case "sync":
+      await incremental({
+        source,
+        filter,
+        naming,
+        storage,
+        cache,
+        sourceName: "gmail",
+      })
+      break
+
+    case "rename":
+      await renameFiles({
+        naming,
+        storage,
+        cache,
+        sourceName: "gmail",
+      })
+      break
+
     default:
       console.log(`unknown command: ${command}`)
-      console.log("available commands: full-sync")
+      console.log("available commands: sync, full-sync, rename")
       process.exit(1)
   }
 }
