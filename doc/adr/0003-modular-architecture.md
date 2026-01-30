@@ -18,7 +18,7 @@ current code is a single 186-line file. works fine for one-shot gmail invoice ex
 separate concerns into modules:
 
 ```
-src/
+packages/cli/src/
 ├── index.ts              # entry point, wires modules together
 ├── auth/                 # oauth flows (gmail, outlook, etc.)
 ├── sources/              # email fetching (gmail, outlook, etc.)
@@ -30,6 +30,8 @@ src/
 ```
 
 each module exposes a clean interface. `index.ts` composes them.
+
+**update 2026-01-29**: refactored to turborepo monorepo with cli in `packages/cli/` for changeset compatibility.
 
 ## consequences
 

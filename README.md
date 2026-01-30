@@ -4,7 +4,7 @@ extract attachments from gmail. automatic vendor detection, incremental sync, sa
 
 ```bash
 pnpm install
-bun run src/index.ts sync
+pnpm --filter unstaple start sync
 ```
 
 ## commands
@@ -74,7 +74,7 @@ export UNSTAPLE_OUTPUT_DIR=/path/to/output
 ## architecture
 
 ```
-src/
+packages/cli/src/
 ├── index.ts           # CLI entry
 ├── types.ts           # shared interfaces
 ├── cache/             # JSON persistence
@@ -89,14 +89,16 @@ pipeline architecture with hooks — operations are composable, streaming via `A
 
 see [doc/adr/](doc/adr/) for architectural decisions.
 
-## scripts
+## development
+
+monorepo managed with turborepo + pnpm workspaces.
 
 ```bash
-pnpm run start      # bun run src/index.ts
-pnpm run dev        # bun run --watch
-pnpm run build      # bun build --compile
-pnpm run check      # tsc --noEmit
-pnpm run lint       # oxlint
+pnpm install                      # install all deps
+pnpm run dev                      # turbo dev (watch mode)
+pnpm run check                    # turbo check (typecheck)
+pnpm run lint                     # turbo lint
+pnpm --filter unstaple start      # run cli directly
 ```
 
 ## install
